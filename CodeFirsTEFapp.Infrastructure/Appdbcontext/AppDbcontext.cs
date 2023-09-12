@@ -28,8 +28,19 @@ namespace CodeFirsTEFapp.Infrastructure.Appdbcontext
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Teacher>()
+                 .HasKey(t => t.Id)
+                 .HasName("PK_Teacher");
+
+            modelBuilder.Entity<Subject>()
+                .HasKey(s => s.Id)
+                .HasName("PK_Subject");
+
             modelBuilder.Entity<TeacherSubject>()
-                .HasKey(ts => new { ts.SubjectID, ts.TeacherID });
+                .HasKey(ts => new { ts.SubjectID, ts.TeacherID })
+                .HasName("PK_TeacherSubject");
+            modelBuilder.Entity<TeacherSubject>().HasOne(ts=>ts.Subject).WithMany(t=>t.)
+            
         }
 
 
