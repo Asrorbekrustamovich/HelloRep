@@ -15,13 +15,13 @@ namespace CodeFirsTEFapp.Domain.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public int Salary {get; set; }
-        List<TeacherSubject> teacherSubjects;
+        public List<TeacherSubject>TeacherSubjects { get; set; }
     }
     public class Subject
     {
         public string Name { get; set; }
         public int Id { get;set; }
-        List<TeacherSubject> teacherSubjects;
+        public List<TeacherSubject> TeacherSubjects { get; set; }
 
     }
     public class TeacherSubject
