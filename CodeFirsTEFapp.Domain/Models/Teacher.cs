@@ -11,11 +11,9 @@ namespace CodeFirsTEFapp.Domain.Models
 {
     public class Teacher
     {
-        [Key,DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+      
         public int Id { get; set; }
-        [MaxLength(50)]
         public string Name { get; set; }
-        [ForeignKey("F_KEy"),Column("hello")]
         public int Salary {get; set; }
     }
     public class Subject
@@ -27,11 +25,7 @@ namespace CodeFirsTEFapp.Domain.Models
     public class TeacherSubject
         
     {
-        [ForeignKey("Subject_Fk")]
-        [Key]
         public int SubjectID { get; set; }
-        [ForeignKey("Teacher_Fk")]
-        [Key]
         public int TeacherID { get; set; }  
         public Subject Subject { get; set; }
         public Teacher Teacher { get; set; }
