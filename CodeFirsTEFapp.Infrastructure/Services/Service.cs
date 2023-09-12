@@ -15,6 +15,7 @@ namespace CodeFirsTEFapp.Infrastructure.Services
         {
 
             _repository = new Repository.Repository();
+            Console.WriteLine();
         }
 
         public void Delete(int DeleteId)
