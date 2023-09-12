@@ -19,9 +19,9 @@ namespace CodeFirsTEFapp.Infrastructure.Appdbcontext
         {
             
         }
-        public DbSet<Teacher>Teachers { get; set; }
+       public DbSet<Teacher> Teachers { get; set; }
         public DbSet<Subject> Subjects { get; set; }
-        public DbSet<TeacherSubject>TeacherSubjects { get; set; }
+        public DbSet<TeacherSubject> TeachersSubject { get; set;}
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseNpgsql("Server=::1;Port=5432;Database=Hello;user id=postgres;password=123456");
@@ -29,8 +29,8 @@ namespace CodeFirsTEFapp.Infrastructure.Appdbcontext
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Teacher>()
-                 .HasKey(t => t.Id)
-                 .HasName("PK_Teacher");
+                .HasKey(t => t.Id)
+                .HasName("PK_Teacher");
 
             modelBuilder.Entity<Subject>()
                 .HasKey(s => s.Id)
@@ -39,8 +39,29 @@ namespace CodeFirsTEFapp.Infrastructure.Appdbcontext
             modelBuilder.Entity<TeacherSubject>()
                 .HasKey(ts => new { ts.SubjectID, ts.TeacherID })
                 .HasName("PK_TeacherSubject");
-            modelBuilder.Entity<TeacherSubject>().HasOne(ts=>ts.Subject).WithMany(t=>t.)
-            
+
+            modelBuilder.Entity<TeacherSubject>()
+                .HasOne(ts => ts.Subject)
+                .WithMany(s => s.TeacherSubjects)
+                .HasForeignKey(ts => ts.SubjectID)
+                .IsRequired()
+                .HasConstraintName("FK_TeacherSubject_Subject");
+            modelBuilder.Entity<TeacherSubject>().HasOne(ts => ts.Teacher).WithMany(t => t.TeacherSubjects).HasForeignKey(t => t.TeacherID).IsRequired().HasConstraintName("FK_TeacherSubject_Teacher");
+            modelBuilder.Entity<TeacherSubject>()
+                  .HasOne(ts => ts.Subject)
+                  .WithMany(s => s.TeacherSubjects)
+                  .HasForeignKey(ts => ts.SubjectID)
+                  .IsRequired()
+                  .OnDelete(DeleteBehavior.Cascade); 
+
+            modelBuilder.Entity<TeacherSubject>()
+                .HasOne(ts => ts.Teacher)
+                .WithMany(t => t.TeacherSubjects)
+                .HasForeignKey(ts => ts.TeacherID)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Cascade); 
+
+
         }
 
 

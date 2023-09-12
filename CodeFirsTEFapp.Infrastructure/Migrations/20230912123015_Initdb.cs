@@ -6,7 +6,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CodeFirsTEFapp.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class InitDb : Migration
+    public partial class Initdb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -21,7 +21,7 @@ namespace CodeFirsTEFapp.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Subjects", x => x.Id);
+                    table.PrimaryKey("PK_Subject", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -30,16 +30,16 @@ namespace CodeFirsTEFapp.Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    hello = table.Column<int>(type: "integer", nullable: false)
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Salary = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Teachers", x => x.Id);
+                    table.PrimaryKey("PK_Teacher", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "TeacherSubjects",
+                name: "TeachersSubject",
                 columns: table => new
                 {
                     SubjectID = table.Column<int>(type: "integer", nullable: false),
@@ -47,15 +47,15 @@ namespace CodeFirsTEFapp.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TeacherSubjects", x => new { x.SubjectID, x.TeacherID });
+                    table.PrimaryKey("PK_TeacherSubject", x => new { x.SubjectID, x.TeacherID });
                     table.ForeignKey(
-                        name: "FK_TeacherSubjects_Subjects_SubjectID",
+                        name: "FK_TeacherSubject_Subject",
                         column: x => x.SubjectID,
                         principalTable: "Subjects",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_TeacherSubjects_Teachers_TeacherID",
+                        name: "FK_TeacherSubject_Teacher",
                         column: x => x.TeacherID,
                         principalTable: "Teachers",
                         principalColumn: "Id",
@@ -63,8 +63,8 @@ namespace CodeFirsTEFapp.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_TeacherSubjects_TeacherID",
-                table: "TeacherSubjects",
+                name: "IX_TeachersSubject_TeacherID",
+                table: "TeachersSubject",
                 column: "TeacherID");
         }
 
@@ -72,7 +72,7 @@ namespace CodeFirsTEFapp.Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "TeacherSubjects");
+                name: "TeachersSubject");
 
             migrationBuilder.DropTable(
                 name: "Subjects");

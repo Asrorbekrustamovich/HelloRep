@@ -33,7 +33,8 @@ namespace CodeFirsTEFapp.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("PK_Subject");
 
                     b.ToTable("Subjects");
                 });
@@ -48,14 +49,13 @@ namespace CodeFirsTEFapp.Infrastructure.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
+                        .HasColumnType("text");
 
                     b.Property<int>("Salary")
-                        .HasColumnType("integer")
-                        .HasColumnName("hello");
+                        .HasColumnType("integer");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("PK_Teacher");
 
                     b.ToTable("Teachers");
                 });
@@ -68,30 +68,43 @@ namespace CodeFirsTEFapp.Infrastructure.Migrations
                     b.Property<int>("TeacherID")
                         .HasColumnType("integer");
 
-                    b.HasKey("SubjectID", "TeacherID");
+                    b.HasKey("SubjectID", "TeacherID")
+                        .HasName("PK_TeacherSubject");
 
                     b.HasIndex("TeacherID");
 
-                    b.ToTable("TeacherSubjects");
+                    b.ToTable("TeachersSubject");
                 });
 
             modelBuilder.Entity("CodeFirsTEFapp.Domain.Models.TeacherSubject", b =>
                 {
                     b.HasOne("CodeFirsTEFapp.Domain.Models.Subject", "Subject")
-                        .WithMany()
+                        .WithMany("TeacherSubjects")
                         .HasForeignKey("SubjectID")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("FK_TeacherSubject_Subject");
 
                     b.HasOne("CodeFirsTEFapp.Domain.Models.Teacher", "Teacher")
-                        .WithMany()
+                        .WithMany("TeacherSubjects")
                         .HasForeignKey("TeacherID")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("FK_TeacherSubject_Teacher");
 
                     b.Navigation("Subject");
 
                     b.Navigation("Teacher");
+                });
+
+            modelBuilder.Entity("CodeFirsTEFapp.Domain.Models.Subject", b =>
+                {
+                    b.Navigation("TeacherSubjects");
+                });
+
+            modelBuilder.Entity("CodeFirsTEFapp.Domain.Models.Teacher", b =>
+                {
+                    b.Navigation("TeacherSubjects");
                 });
 #pragma warning restore 612, 618
         }
